@@ -13,6 +13,24 @@ app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 2
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
+app.get("/", function(req, res) {
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+
+app.set('trust proxy', true);
+
+app.get("/api/whoami", function(req, res) {
+  const ipaddress = req.ip;
+  const language = req.headers['accept-language'];
+  const software = req.headers['user-agent'];
+
+  res.json({
+    ipaddress: ipaddress,
+    language: language,
+    software: software
+  });
+});
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', function (req, res) {
